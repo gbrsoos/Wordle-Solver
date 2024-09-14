@@ -1,0 +1,4 @@
+([('Wordle_Solver',
+   '/Users/soosgabor/Library/Mobile '
+   'Documents/com~apple~CloudDocs/05_Programming/01_Wordle/dist/Wordle_Solver',
+   'EXECUTABLE')],)
