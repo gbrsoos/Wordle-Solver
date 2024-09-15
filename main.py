@@ -10,7 +10,7 @@ from best_guess import find_best_guess
 from gui import wordle_feedback_gui
 
 # Open the JSON file for reading
-with open('/Users/soosgabor/Library/Mobile Documents/com~apple~CloudDocs/05_Programming/01_Wordle/initial_entropies.json', 'r') as file:
+with open('/Users/soosgabor/01_Programming/Projects/01_Wordle/initial_entropies.json', 'r') as file:
     INITIAL_ENTROPIES = json.load(file)
 
 FIRST_GUESS = next(iter(INITIAL_ENTROPIES.keys()))
