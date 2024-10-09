@@ -30,19 +30,30 @@ def wordle_solver(wordlist, secret_word=None):
 
     # Step 1: Use the fixed first guess for the first round
     best_guess = FIRST_GUESS  # Fixed first guess
+    # Step 1: Use the fixed first guess for the first round
+    gui.update_guess(best_guess)  # Display the first guess in the GUI
     
     while not solved and guess_count < 6:
         if guess_count == 0:
             print(f"First Guess: {best_guess}")
+            gui.update_guess(best_guess)  # Display the first guess in the GUI
         else:
             # Recalculate entropy after pruning and choose the best guess
             entropy_values = {word: entropy_calculation(word, wordlist, feedback) for word in possible_words_dict.keys()}
-            best_guess = max(entropy_values, key=entropy_values.get)
+            
+            # Get the top 10 guesses based on entropy
+            sorted_guesses = sorted(entropy_values.items(), key=lambda x: x[1], reverse=True)
+            top_guesses = sorted_guesses[:10]  # Get the top 10 words
+            
+            # Set the best guess
+            best_guess = top_guesses[0][0]
             print(f"Guess {guess_count + 1}: {best_guess}")
+
+            # Pass the top 10 words to the GUI
+            gui.update_top_words([word for word, _ in top_guesses])
 
         # Update the GUI with the current best guess
         gui.update_guess(best_guess)
-        gui.add_feedback_row()
 
         # Run the GUI event loop and wait for feedback
         root.mainloop()

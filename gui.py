@@ -4,56 +4,75 @@ class WordleFeedbackGUI:
     def __init__(self, root):
         self.root = root
         self.root.title("Wordle Feedback")
-        self.feedback = ['⬜'] * 5  # Initial feedback: all grey
-        self.buttons = []
-        self.guess_label = None
+        self.feedback_ready = False
+        
+        # Label for Best Guess
+        self.best_guess_label = tk.Label(root, text="Best Guess: ", font=("Arial", 16))
+        self.best_guess_label.grid(row=0, column=0, columnspan=5, pady=(10, 5))
+        
+        # Label and Listbox for Top 10 Words
+        self.top_words_label = tk.Label(root, text="Top 10 Words by Entropy", font=("Arial", 14))
+        self.top_words_label.grid(row=1, column=0, columnspan=5)
 
-        # Create a frame for feedback rows
-        self.feedback_frame = tk.Frame(root)
-        self.feedback_frame.pack(pady=10)
+        self.top_words_listbox = tk.Listbox(root, width=50, height=10)
+        self.top_words_listbox.grid(row=2, column=0, columnspan=5, pady=10)
 
-        # Create a label for the guessed word
-        self.guess_label = tk.Label(root, text="", font=("Arial", 16))
-        self.guess_label.pack()
+        # Initialize feedback squares (one row)
+        self.feedback_squares = []
+        self.create_feedback_squares()
 
-        # Create a submit button to confirm feedback
-        self.submit_button = tk.Button(root, text="Submit Feedback", command=self.submit_feedback)
-        self.submit_button.pack(pady=10)
+        # Add a submit button
+        submit_button = tk.Button(root, text="Submit Feedback", command=self.submit_feedback)
+        submit_button.grid(row=4, column=0, columnspan=5)
 
-        self.feedback_data = []
+    def create_feedback_squares(self):
+        """Create a single row of feedback squares."""
+        row = tk.Frame(self.root)
+        row.grid(row=3, column=0, columnspan=5, pady=10)
+
+        for i in range(5):
+            button = tk.Button(row, text='⬜', font=("Arial", 24), width=4, command=lambda i=i: self.cycle_feedback(i))
+            button.grid(row=0, column=i)
+            self.feedback_squares.append(button)
+
+    def update_top_words(self, top_words):
+        """Update the top 10 words list."""
+        self.top_words_listbox.delete(0, tk.END)  # Clear current list
+        for word in top_words:
+            self.top_words_listbox.insert(tk.END, word)
 
     def update_guess(self, guess):
-        if self.guess_label:
-            self.guess_label.config(text=f"Guess: {guess}")
+        """Update the displayed best guess in the GUI."""
+        self.best_guess_label.config(text=f"Best Guess: {guess}")
 
-    def add_feedback_row(self):
-        # Create buttons for each letter in the guessed word
-        self.feedback = ['⬜'] * 5  # Reset feedback for new guess
-        self.buttons = []
-        for i in range(5):
-            button = tk.Button(self.feedback_frame, text=self.feedback[i], font=("Arial", 24), width=4, command=lambda i=i: self.cycle_feedback(i))
-            button.grid(row=len(self.feedback_data), column=i)
-            self.buttons.append(button)
-        self.feedback_data.append(self.feedback)
+    def cycle_feedback(self, index):
+        """Cycle through grey, yellow, and green colors for a square."""
+        feedback_states = ['⬜', '🟨', '🟩']  # Grey, Yellow, Green
+        current_state = self.feedback_squares[index].cget("text")  # Get current button text
+        
+        # Determine the new state
+        if current_state == '⬜':
+            new_state = '🟨'  # Change from Grey to Yellow
+        elif current_state == '🟨':
+            new_state = '🟩'  # Change from Yellow to Green
+        else:
+            new_state = '⬜'  # Change from Green back to Grey
 
-    def cycle_feedback(self, i):
-        """Cycle through ⬜, 🟨, and 🟩 when the button is clicked."""
-        feedback_states = ['⬜', '🟨', '🟩']
-        current_state = feedback_states.index(self.feedback[i])
-        self.feedback[i] = feedback_states[(current_state + 1) % 3]
-        self.buttons[i].config(text=self.feedback[i])
-
-    def submit_feedback(self):
-        """Return the feedback and close the GUI."""
-        self.root.quit()  # Closes the window after submission
+        self.feedback_squares[index].config(text=new_state)  # Update the button text
 
     def get_feedback(self):
-        """Retrieve the feedback from the GUI."""
-        return self.feedback
+        """Return the feedback from the GUI."""
+        return [button.cget("text") for button in self.feedback_squares]
 
-    def close(self):
-        """Properly close the GUI."""
-        self.root.destroy()
+    def submit_feedback(self):
+        """Signal that feedback is ready and close the GUI."""
+        self.feedback_ready = True
+        self.root.quit()  # Close the GUI
+
+# Example usage:
+# root = tk.Tk()
+# gui = WordleFeedbackGUI(root)
+# root.mainloop()
 
 def wordle_feedback_gui(gui, best_guess):
     """Update the existing GUI window with a new row for each best guess."""
