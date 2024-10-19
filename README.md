@@ -1,7 +1,7 @@
 # Wordle-Solver
 
-This project is a solver for the New York Times' famous daily game, Wordle (https://www.nytimes.com/games/wordle/index.html).
-The idea is coming from the popular YouTube channel, 3Blue1Brown (https://www.youtube.com/watch?v=v68zYyaEmEA&t=228s). The purpose of this project was to recreate the output without looking into his code.
+This project is a solver for the New York Times' famous daily game, [Wordle](https://www.nytimes.com/games/wordle/index.html).
+The idea is coming from the popular YouTube channel, [3Blue1Brown](https://www.youtube.com/watch?v=v68zYyaEmEA&t=228s). The purpose of this project was to recreate the output without looking into his code.
 
 Wordle solver is an entropy-based solution that suggests optimal words for input based on the game's feedback. 
 
@@ -15,8 +15,9 @@ Wordle solver is an entropy-based solution that suggests optimal words for input
 6. There is also an executable, which can be used to start the program using a Mac device.
 
 ## Way of using:
+To be practical, I built an executable file, however, currently it is only working on MacOS.
 
-The most practical way to use the program is the following:
+The most practical and universal way to use the program is the following:
 1. Fork the repository
-2. In your terminal, navigate to the folder using 'cd'
-3. type 'python main.py' and wait for the program to run
+2. In your terminal, navigate to the project folder
+3. Type 'python main.py' and wait for the program to run
