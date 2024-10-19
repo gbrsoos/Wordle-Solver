@@ -1,4 +1,5 @@
 # Wordle-Solver
+![GUI screenshot](utils/GUI_sc.png)
 
 This project is a solver for the New York Times' famous daily game, [Wordle](https://www.nytimes.com/games/wordle/index.html).
 The idea is coming from the popular YouTube channel, [3Blue1Brown](https://www.youtube.com/watch?v=v68zYyaEmEA&t=228s). The purpose of this project was to recreate the output without looking into his code.
